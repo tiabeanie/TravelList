@@ -1,0 +1,22 @@
+<h1>Get Ideas</h1>
+<% if Destination.all.empty? %>
+  <div class="text-center"><p>No one has started a list yet!</p>
+  <p><a class="btn btn-success" style="margin: 20px" href="/destinations/new" role="button">Add a New Destination</a></div>
+<% else %>
+  <div class="row">
+    <a class="btn btn-success" style="margin: 20px" href="/destinations" role="button">< Back to My List</a>
+    <a class="btn btn-info" style="margin: 20px" href="/countries" role="button">View Destiations By Country</a>
+  </div>
+<% end %>
+<div class="row">
+  <% Destination.all.each do |e| %>
+    <% unless e.user_id == @user.id %>
+      <div class="card" style="width: 15rem; margin: 20px">
+        <div class="text-center">
+          <div class="card-header"><a href='/destinations/<%= e.id %>'><%= e.description %></a></div>
+          <div class="card-body" style="padding: 10px"><%= e.country.name %></div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
