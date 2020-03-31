@@ -20,3 +20,4 @@ class CountriesController < ApplicationController
     @country = Country.find(params["id"])
     erb :"countries/show"
   end
+end 
