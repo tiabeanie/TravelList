@@ -1,13 +1,15 @@
 <h1>Add a New Destination</h1>
-<form method="POST" action="/experiences/new_from_user">
-  <input name="id" value="<%= @experience.id %>" type="hidden">
+<form method="POST" action="/destinations/new_from_user">
+  <input name="id" value="<%= @destination.id %>" type="hidden">
   <div class="form-group">
     <label for="description">Description *</label>
-    <input type="text" class="form-control" id="description" name="description" value="<%= @experience.description %>" required>
+    <input type="text" class="form-control" id="description" name="description" value="<%= @destination.description %>" required>
   </div>
   <div class="form-group">
     <label for="country">Country *</label>
-    <% country = Country.find(@experience.country_id) %>
+    <% country = Country.find(@destination.country_id) %>
     <input type="text" class="form-control" id="country" name="country" value="<%= country.name %>" required>
-  </div>
+</div>
+  <br><br>
+  <button type="submit" class="btn btn-primary" style="margin-bottom: 20px">Add</button>
 </form>

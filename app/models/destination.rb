@@ -5,10 +5,11 @@ class Destination < ActiveRecord::Base
     def self.create_new_destination(details, session_uid)
       @details = details
       @user = User.find(session_uid)
+      
   
       set_country
   
-      @destination = destination.new(
+      @destination = Destination.new(
         :description => @details[:description],
         :country => @country,
       )

@@ -33,7 +33,7 @@ class DestinationsController < ApplicationController
 
     is_empty?(details, 'destinations/new')
 
-    @destination = Destination.create_new_destination(details, category_name, category_ids, session[:user_id])
+    @destination = Destination.create_new_destination(details, session[:user_id])
 
     flash[:success] = "Successfully created new destination!"
     redirect to "destinations/#{@destination.id}"
