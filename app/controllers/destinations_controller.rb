@@ -1,4 +1,4 @@
-class destinationsController < ApplicationController
+class DestinationsController < ApplicationController
   before '/destinations/*' do
     if !is_logged_in?
       flash[:login] = "You need to be logged in to performance that action"
@@ -22,7 +22,6 @@ class destinationsController < ApplicationController
   end
 
   get '/destinations/new' do
-    @categories = Category.all
     erb :"destinations/create"
   end
 
@@ -31,12 +30,10 @@ class destinationsController < ApplicationController
       :description => @params["description"],
       :country => @params["country"]
     }
-    category_name = @params["category"]["name"]
-    category_ids = @params["category"]["category_ids"]
 
     is_empty?(details, 'destinations/new')
 
-    @destination = destination.create_new_destination(details, category_name, category_ids, session[:user_id])
+    @destination = Destination.create_new_destination(details, category_name, category_ids, session[:user_id])
 
     flash[:success] = "Successfully created new destination!"
     redirect to "destinations/#{@destination.id}"
@@ -58,12 +55,10 @@ class destinationsController < ApplicationController
       :description => @params["description"],
       :country => @params["country"]
     }
-    category_name = @params["category"]["name"]
-    category_ids = @params["category"]["category_ids"]
 
     is_empty?(details, "destinations/#{params[:id]}/new_from_user")
 
-    @destination = destination.create_new_destination(details, category_name, category_ids, session[:user_id])
+    @destination = Destination.create_new_destination(details, session[:user_id])
 
     flash[:success] = "Successfully created new destination!"
     redirect to "destinations/#{@destination.id}"
@@ -71,7 +66,7 @@ class destinationsController < ApplicationController
 
   get '/destinations/:id/edit' do
     @user = current_user
-    @destination = destination.find(params["id"])
+    @destination = Destination.find(params["id"])
     if @user.id != @destination.user_id
       flash[:edit_user] = "You can only edit your own destinations"
       redirect to "/destinations/#{@destination.id}"
@@ -80,26 +75,24 @@ class destinationsController < ApplicationController
   end
 
   patch '/destinations/:id' do
-    destination = destination.find(params[:id])
+    destination = Destination.find(params[:id])
 
     details = {
       :description => params["description"],
       :country => params["country"]
     }
-    category_name = params["category"]["name"]
-    category_ids = params["category"]["category_ids"]
 
     is_empty?(details, "destinations/#{params[:id]}/edit")
 
-    exp = destination.update_destination(details, category_name, category_ids, destination)
+    dest = Destination.update_destination(details, destination)
 
     flash[:success] = "Successfully updated your destination!"
-    redirect to "destinations/#{exp.id}"
+    redirect to "destinations/#{dest.id}"
   end
 
   delete '/destinations/:id/delete' do
     @user = current_user
-    @destination = destination.find(params[:id])
+    @destination = Destination.find(params[:id])
     if @user.id != @destination.user_id
       flash[:edit_user]
       redirect to '/destinations/#{@destination.id}'
@@ -112,7 +105,7 @@ class destinationsController < ApplicationController
 
   get '/destinations/:id' do
     @user = current_user
-    @destination = destination.find(params["id"])
+    @destination = Destination.find(params["id"])
     erb :"destinations/show"
   end
 
