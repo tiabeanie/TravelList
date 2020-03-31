@@ -1,11 +1,11 @@
 <div class="jumbotron">
-  <h1 class="display-3"><%= @destination.description %></h1>
+  <h1 class="display-3"><%= @destination.name %></h1>
   <p class="lead"><strong>Country:</strong> <a href="/countries/<%= @destination.country.id %>"><%= @destination.country.name %></a></p>
   <% if @destination.user_id == @user.id %>
     <p>From Your List</p>
     <a class="btn btn-info btn-sm" href="/destinations/<%= @destination.id %>/edit" role="button">Edit destination</a>
   <% else %>
-    <p>From <%= @destination.user.name %>'s List</p>
+    <p>From <%= @user.name %>'s List</p>
     <a class="btn btn-info btm-sm" href="/destinations/<%= @destination.id %>/new_from_user" role="button">Add this to my List</a>
   <% end %>
   <% if @destination.user_id == @user.id %>

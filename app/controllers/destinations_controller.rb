@@ -1,7 +1,7 @@
 class DestinationsController < ApplicationController
   before '/destinations/*' do
     if !is_logged_in?
-      flash[:login] = "You need to be logged in to performance that action"
+      flash[:login] = "You need to be logged in for that"
       redirect to '/login'
     end
   end
@@ -11,7 +11,7 @@ class DestinationsController < ApplicationController
       @user = current_user
       erb :"destinations/destinations"
     else
-      flash[:login] = "You need to be logged in to performance that action"
+      flash[:login] = "You need to be logged in for that"
       redirect to '/login'
     end
   end
@@ -35,18 +35,18 @@ class DestinationsController < ApplicationController
 
     @destination = Destination.create_new_destination(details, session[:user_id])
 
-    flash[:success] = "Successfully created new destination!"
+    flash[:success] = "Created new destination!"
     redirect to "destinations/#{@destination.id}"
   end
 
   get '/destinations/:id/new_from_user' do
     user = current_user
-    @destination = destination.find(params["id"])
+    @destination = Destination.find(params["id"])
     if @destination.user_id == user.id
       flash[:add_from_user] = "This destination already belongs to you!"
       redirect to "/destinations/#{params["id"]}"
     else
-      erb :"destinations/create_from_user"
+      erb :"destinations/create_from_users"
     end
   end
 
@@ -60,7 +60,7 @@ class DestinationsController < ApplicationController
 
     @destination = Destination.create_new_destination(details, session[:user_id])
 
-    flash[:success] = "Successfully created new destination!"
+    flash[:success] = "Created new destination!"
     redirect to "destinations/#{@destination.id}"
   end
 
@@ -86,7 +86,7 @@ class DestinationsController < ApplicationController
 
     dest = Destination.update_destination(details, destination)
 
-    flash[:success] = "Successfully updated your destination!"
+    flash[:success] = "Updated your destination!"
     redirect to "destinations/#{dest.id}"
   end
 
@@ -105,7 +105,7 @@ class DestinationsController < ApplicationController
 
   get '/destinations/:id' do
     @user = current_user
-    @destination = Destination.find(params["id"])
+    @destination = Destination.find_by_id(params["id"])
     erb :"destinations/show"
   end
 
