@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   get '/signup' do
-    redirect to '/experiences' if is_logged_in?
+    redirect to '/destinations' if is_logged_in?
 
     erb :"users/signup"
   end
@@ -20,11 +20,11 @@ class UsersController < ApplicationController
     new_user = User.create(user_info)
     session[:user_id] = new_user.id
 
-    redirect to '/experiences'
+    redirect to '/destinations'
   end
 
   get '/login' do
-    redirect to '/experiences' if is_logged_in?
+    redirect to '/destinations' if is_logged_in?
 
     erb :"users/login"
   end
@@ -41,7 +41,7 @@ class UsersController < ApplicationController
 
     if user && user.authenticate(user_info[:password])
       session[:user_id] = user.id
-      redirect to '/experiences'
+      redirect to '/destinations'
     else
       if user
         flash[:password] = "Your password is incorrect"

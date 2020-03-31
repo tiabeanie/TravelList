@@ -1,32 +1,32 @@
-class ExperiencesController < ApplicationController
-  before '/experiences/*' do
+class destinationsController < ApplicationController
+  before '/destinations/*' do
     if !is_logged_in?
       flash[:login] = "You need to be logged in to performance that action"
       redirect to '/login'
     end
   end
 
-  get '/experiences' do
+  get '/destinations' do
     if is_logged_in?
       @user = current_user
-      erb :"experiences/experiences"
+      erb :"destinations/destinations"
     else
       flash[:login] = "You need to be logged in to performance that action"
       redirect to '/login'
     end
   end
 
-  get '/experiences/users' do
+  get '/destinations/users' do
     @user = current_user
-    erb :"experiences/experiences_from_user"
+    erb :"destinations/destinations_from_user"
   end
 
-  get '/experiences/new' do
+  get '/destinations/new' do
     @categories = Category.all
-    erb :"experiences/create"
+    erb :"destinations/create"
   end
 
-  post '/experiences' do
+  post '/destinations' do
     details = {
       :description => @params["description"],
       :country => @params["country"]
@@ -34,26 +34,26 @@ class ExperiencesController < ApplicationController
     category_name = @params["category"]["name"]
     category_ids = @params["category"]["category_ids"]
 
-    is_empty?(details, 'experiences/new')
+    is_empty?(details, 'destinations/new')
 
-    @experience = Experience.create_new_experience(details, category_name, category_ids, session[:user_id])
+    @destination = destination.create_new_destination(details, category_name, category_ids, session[:user_id])
 
-    flash[:success] = "Successfully created new experience!"
-    redirect to "experiences/#{@experience.id}"
+    flash[:success] = "Successfully created new destination!"
+    redirect to "destinations/#{@destination.id}"
   end
 
-  get '/experiences/:id/new_from_user' do
+  get '/destinations/:id/new_from_user' do
     user = current_user
-    @experience = Experience.find(params["id"])
-    if @experience.user_id == user.id
-      flash[:add_from_user] = "This experience already belongs to you!"
-      redirect to "/experiences/#{params["id"]}"
+    @destination = destination.find(params["id"])
+    if @destination.user_id == user.id
+      flash[:add_from_user] = "This destination already belongs to you!"
+      redirect to "/destinations/#{params["id"]}"
     else
-      erb :"experiences/create_from_user"
+      erb :"destinations/create_from_user"
     end
   end
 
-  post '/experiences/new_from_user' do
+  post '/destinations/new_from_user' do
     details = {
       :description => @params["description"],
       :country => @params["country"]
@@ -61,26 +61,26 @@ class ExperiencesController < ApplicationController
     category_name = @params["category"]["name"]
     category_ids = @params["category"]["category_ids"]
 
-    is_empty?(details, "experiences/#{params[:id]}/new_from_user")
+    is_empty?(details, "destinations/#{params[:id]}/new_from_user")
 
-    @experience = Experience.create_new_experience(details, category_name, category_ids, session[:user_id])
+    @destination = destination.create_new_destination(details, category_name, category_ids, session[:user_id])
 
-    flash[:success] = "Successfully created new experience!"
-    redirect to "experiences/#{@experience.id}"
+    flash[:success] = "Successfully created new destination!"
+    redirect to "destinations/#{@destination.id}"
   end
 
-  get '/experiences/:id/edit' do
+  get '/destinations/:id/edit' do
     @user = current_user
-    @experience = Experience.find(params["id"])
-    if @user.id != @experience.user_id
-      flash[:edit_user] = "You can only edit your own experiences"
-      redirect to "/experiences/#{@experience.id}"
+    @destination = destination.find(params["id"])
+    if @user.id != @destination.user_id
+      flash[:edit_user] = "You can only edit your own destinations"
+      redirect to "/destinations/#{@destination.id}"
     end
-    erb :"experiences/edit"
+    erb :"destinations/edit"
   end
 
-  patch '/experiences/:id' do
-    experience = Experience.find(params[:id])
+  patch '/destinations/:id' do
+    destination = destination.find(params[:id])
 
     details = {
       :description => params["description"],
@@ -89,31 +89,31 @@ class ExperiencesController < ApplicationController
     category_name = params["category"]["name"]
     category_ids = params["category"]["category_ids"]
 
-    is_empty?(details, "experiences/#{params[:id]}/edit")
+    is_empty?(details, "destinations/#{params[:id]}/edit")
 
-    exp = Experience.update_experience(details, category_name, category_ids, experience)
+    exp = destination.update_destination(details, category_name, category_ids, destination)
 
-    flash[:success] = "Successfully updated your experience!"
-    redirect to "experiences/#{exp.id}"
+    flash[:success] = "Successfully updated your destination!"
+    redirect to "destinations/#{exp.id}"
   end
 
-  delete '/experiences/:id/delete' do
+  delete '/destinations/:id/delete' do
     @user = current_user
-    @experience = Experience.find(params[:id])
-    if @user.id != @experience.user_id
+    @destination = destination.find(params[:id])
+    if @user.id != @destination.user_id
       flash[:edit_user]
-      redirect to '/experiences/#{@experience.id}'
+      redirect to '/destinations/#{@destination.id}'
     else
-      @experience.destroy
-      flash[:deleted] = "Your experience has been deleted"
-      redirect to '/experiences'
+      @destination.destroy
+      flash[:deleted] = "Your destination has been deleted"
+      redirect to '/destinations'
     end
   end
 
-  get '/experiences/:id' do
+  get '/destinations/:id' do
     @user = current_user
-    @experience = Experience.find(params["id"])
-    erb :"experiences/show"
+    @destination = destination.find(params["id"])
+    erb :"destinations/show"
   end
 
 end
