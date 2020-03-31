@@ -1,0 +1,10 @@
+<h1>Destinations by Country</h1>
+<div class="list-group">
+  <% @countries.each do |country| %>
+    <% if !country.destinations.empty? %>
+    <a href="/countries/<%= country.id %>" class="list-group-item list-group-item-action"><%= country.name %>
+    <span class="badge badge-primary badge-pill" style="margin: 5px"><%= country.destinations.length %></span></a>
+    <% end %>
+  <% end %>
+</div>
+<div class="text-right"><a class="btn btn-warning" style="margin: 20px" href="/experiences/users" role="button">< Back to Get Inspiration</a></div>

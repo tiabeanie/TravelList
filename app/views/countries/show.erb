@@ -1,0 +1,11 @@
+<h1 class="display-3">All Destinations from <%= @country.name %></h1>
+<div class="row">
+  <% @country.destinations.each do |exp| %>
+    <div class="card" style="width: 15rem; margin: 20px">
+      <div class="text-center">
+        <div class="card-header"><a href="/destinations/<%= dest.id %>"><%= exp.description %></a></div>
+      </div>
+    </div>
+  <% end %>
+</div>
+<div class="text-right"><a class="btn btn-info" style="margin: 20px" href="/countries" role="button">< Back to All Countries</a></div>
